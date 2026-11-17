@@ -3102,7 +3102,7 @@ function lyFrame() {
     [...list].sort((a, b) => LAYER_OF[b.id] - LAYER_OF[a.id]).forEach(m => {       // الأعمق أولاً ثم السطحي فوقه
         const a = Math.max(0, Math.min(1, lyAlpha[m.id])); if (a <= 0.02) return;
         ctx.globalAlpha = a * (lySel && lySel !== m.id ? 0.55 : 1);
-        drawMultiHeadMuscle(ctx, m, 0.15, '');
+        drawRealMuscle(ctx, m, { shadow: true });
         ctx.globalAlpha = a;
         const P = lyPts(m); if (!P.length) { ctx.globalAlpha = 1; return; }
         const mx = P.reduce((s, p) => s + (p[0].x + p[1].x) / 2, 0) / P.length, my = P.reduce((s, p) => s + (p[0].y + p[1].y) / 2, 0) / P.length;
@@ -3192,8 +3192,6 @@ function shapeBtn() { document.querySelectorAll('.shapeBtn').forEach(b => b.inne
 REAL_SHAPES = NAYA.real !== false;
 // استعمال الشكل الجديد في شاشة الطبقات + زر للمقارنة
 (function () {
-    const src = lyFrame.toString().replace("drawMultiHeadMuscle(ctx, m, 0.15, '');", "drawRealMuscle(ctx, m, { shadow: true });");
-    window.lyFrame = eval('(' + src + ')');
     const _lo = layersOpen;
     window.layersOpen = function () { _lo(); if (!document.querySelector('#layersContainer .shapeBtn')) { document.getElementById('lySteps').insertAdjacentHTML('beforebegin', '<button class="btn btn-dark shapeBtn" style="margin-bottom:8px;" onclick="toggleShapes()"></button>'); shapeBtn(); } };
 })();
